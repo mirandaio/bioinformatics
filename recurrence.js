@@ -3,22 +3,26 @@ const fs = require('fs');
 const n = process.argv[2];
 const k = process.argv[3];
 
-const results = [];
+function buildFibonacci(k) {
+  const lookupTable = [];
 
-function compute(n, k) {
-  if (results[n - 1]) {
-    return results[n - 1];
+  return function fib(n) {
+    if (lookupTable[n - 1]) {
+      return lookupTable[n - 1];
+    }
+
+    if (n === 1 || n === 2) {
+      lookupTable[n - 1] = 1;
+      return 1;
+    }
+
+    lookupTable[n - 2] = fib(n - 1);
+    lookupTable[n - 3] = fib(n - 2);
+    lookupTable[n - 1] = lookupTable[n - 2] + k * lookupTable[n - 3];
+    return lookupTable[n - 1];
   }
-
-  if (n === 1 || n === 2) {
-    results[n - 1] = 1;
-    return 1;
-  }
-
-  results[n - 2] = compute(n - 1, k);
-  results[n - 3] = compute(n - 2, k);
-  results[n - 1] = results[n - 2] + k * results[n - 3];
-  return results[n - 1];
 }
 
-process.stdout.write(compute(n, k).toString());
+const fibonacci = buildFibonacci(k);
+
+process.stdout.write(fibonacci(n).toString());
