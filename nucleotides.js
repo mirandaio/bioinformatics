@@ -20,5 +20,5 @@ fileStream.on('data', chunk => {
 });
 
 fileStream.on('end', () => {
-  console.log(a, c, g, t);
+  process.stdout.write(`${a} ${c} ${g} ${t}`);
 });
